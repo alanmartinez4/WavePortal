@@ -30,7 +30,7 @@ npx hardhat compile
 npx hardhat test
 ```
 
-### Write your first smart contract in Solidity 
+### Write a smart contract in Solidity 
 
 ####
 Create a file named WavePortal.sol under the contracts directory.
@@ -47,3 +47,7 @@ contract WavePortal {
     }
 }
 ```
+
+### Compile a contract locally and run it 
+### Store data on the smart contract
+### Deploy locally so we can start building the website
