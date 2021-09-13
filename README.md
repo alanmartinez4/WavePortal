@@ -11,7 +11,8 @@ npm install --save-dev hardhat
 
 ## Create project and add dependencies 
 
-After the `npx hardhat` command , select "Create a basic sample project"
+After the `npx hardhat` command, select "Create a basic sample project". 
+Select yes for everything. 
 
 ```
 npx hardhat
