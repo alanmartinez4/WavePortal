@@ -11,6 +11,8 @@ npm install --save-dev hardhat
 
 ## Create project and add dependencies 
 
+After the `npx hardhat` command , select "Create a basic sample project"
+
 ```
 npx hardhat
 npm install --save-dev @nomiclabs/hardhat-waffle ethereum-waffle chai @nomiclabs/hardhat-ethers ethers
