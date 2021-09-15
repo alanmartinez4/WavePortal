@@ -49,5 +49,30 @@ contract WavePortal {
 ```
 
 ### Compile a contract locally and run it 
+```
+const { hexStripZeros } = require("@ethersproject/bytes");
+
+async function main() {
+
+    // compiles contract and generates necessary files to work w/ our contract under the artifacts directory
+    const waveContractFactory = await hre.ethers.getContractFactory("WavePortal");
+    // Hardhat creates a local Eth network, but just for this contract
+    const waveContract = await waveContractFactory.deploy();
+    // waits for contract to officially deploy to local blockchain
+    await waveContract.deployed();
+    console.log("Contract deployed to: ", waveContract.address);
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+});
+```
 ### Store data on the smart contract
+
+```
+
+```
 ### Deploy locally so we can start building the website
