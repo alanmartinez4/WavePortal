@@ -75,4 +75,39 @@ main()
 ```
 
 ```
-### Deploy locally so we can start building the website
+### Deploy locally so we can start building the website 
+
+#### Creates a local Ethereum network that stays alive and 20 accounts with a starting balance.
+```
+npx hardhat node
+```
+#### Create a new block and get the smart contract on it. 
+```
+const { hexStripZeros } = require("@ethersproject/bytes");
+const { ethers } = require("ethers");
+
+async function main() {
+  const [deployer] = await hre.ethers.getSigners();
+
+  console.log("Deploying contracts with the account:", deployer.address);
+
+  console.log("Account balance: ", (await deployer.getBalance()).toString());
+
+  const Token = await hre.ethers.getContractFactory("WavePortal");
+  const token = await Token.deploy(); //smart contract
+
+  console.log("WavePortal address:", token.address); // address of Smart Contract
+}
+
+main ()
+  .then(() => process.exit(0))
+  .catch((error) => {
+      console.error(error);
+      process.exit(1);
+  });
+```
+#### Run this command to deploy locally
+```
+npx hardhat run scripts/deploy.js --network localhost
+```
+
