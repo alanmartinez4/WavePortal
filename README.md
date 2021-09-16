@@ -1,6 +1,6 @@
 # WavePortal - local Ethereum network and Solidity smart contract
 
-## Write and deploy your WavePortal smart contract to a local Ethereum network 
+## 1. Write and deploy your WavePortal smart contract to a local Ethereum network 
 
 ### Get your local Ethereum network working
 
@@ -110,4 +110,26 @@ main ()
 ```
 npx hardhat run scripts/deploy.js --network localhost
 ```
+
+## 2. Build a web3 app that connects to our wallet and talks to our WaveContract
+
+### Set up a basic react app and setup MetaMask
+
+### Deploy contract to a real testnet
+
+### Connect our wallet to the web app
+
+### Call the deployed smart contract from the web app
+
+## 3. Update WavePortal to randomly send lucky users waving at you some Ethereum
+
+### Storaging message from users on the blockchain
+
+### Fund contract, set a prize, and send users Eth
+
+## 4. Update UI + deploy to an Ethereum testnet so anyone on the internet can wave at you using their wallet
+
+###
+Randomnly pick a winner and prevent spammers
+
 
