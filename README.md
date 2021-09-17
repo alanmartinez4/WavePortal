@@ -117,6 +117,29 @@ npx hardhat run scripts/deploy.js --network localhost
 
 ### Deploy contract to a real testnet
 
+#### Get some fake Eth
+Go to this facucet https://www.rinkeby.io/#faucet. 
+Easiest way to do this is to make a tweet with your public rinkeby address(which you can find on metamask) and then input that direct tweet URL into the input box.
+
+#### Update the hardhat.config.js file
+Grab your API URL from the Alchemy dashboard and your private rinkeby key. 
+```
+module.exports = {
+  solidity: "0.8.4",
+  networks: {
+    rinkeby: {
+      url: "YOUR_ALCHEMY_API_URL",
+      accounts: ['YOUR_PRIVATE_RINKEBY_ACCOUNT_KEY'],
+    },
+  },
+};
+```
+#### Run this command from the root directory of wave-portal.
+```
+npx hardhat run scripts/deploy.js --network rinkeby
+```
+#### Here is the output
+
 ### Connect our wallet to the web app
 
 ### Call the deployed smart contract from the web app
