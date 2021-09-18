@@ -7,8 +7,8 @@
 #### Create directory and run commands
 
 ```
-mkdir my-wave-portal
-cd my-wave-portal
+mkdir wave-portal
+cd wave-portal
 npm init -y
 npm install --save-dev hardhat
 ```
