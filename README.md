@@ -142,7 +142,168 @@ npx hardhat run scripts/deploy.js --network rinkeby
 
 ### Connect our wallet to the web app
 
+#### Using window.ethereum
+```
+export default function App() {
+  console.log("test")
+  const checkIfWalletIsConnected = () => {
+    // First make sure we have access to window.Ethereum
+    const { ethereum } = window;
+    if (!ethereum) {
+      console.log("Make sure you have MetaMask!")
+      return
+    } else {
+      console.log("Here is the ethereum object", ethereum)
+    }
+  }
+
+ 
+  // This runs our function when the page loads
+  React.useEffect(() => {
+    console.log("Test")
+    checkIfWalletIsConnected()
+  }, [])
+```
+#### Check if we can access the user's account
+```
+ ethereum.request({ method: 'eth_accounts'})
+ .then(accounts => {
+   // We could have multiple accounts. Check for one.
+   if(accounts !== 0) {
+     // Grab the first account we have access to.
+     const account = accounts[0];
+     console.log("Found an authorized account: ", account)
+
+     // Store the users public wallet address for later! 
+     setCurrentAccount(account);
+   } else {
+     console.log("No authorized account found")
+   }
+ })
+```
+#### Build a connect wallet button
+```
+import * as React from "react";
+import { ethers } from "ethers";
+import './App.css';
+
+
+export default function App() {
+  // Just a state variable we use to store our user's public wallet address.
+  const [currAccount, setCurrentAccount] = React.useState("")
+
+  const checkIfWalletIsConnected = () => {
+    // First make sure we have access to window.Ethereum/ MetaMask
+    const { ethereum } = window;
+    if (!ethereum) {
+      console.log("Make sure you have MetaMask!")
+      return
+    } else {
+      console.log("Here is the ethereum object", ethereum)
+    }
+
+ // Check if we're authorized to access the user's wallet 
+ ethereum.request({ method: 'eth_accounts' })
+ .then(accounts => {
+   console.log(accounts)
+   // We could have multiple accounts. Check for one.
+   if(accounts !== 0) {
+     // Grab the first account we have access to.
+     const account = accounts[0];
+     console.log("Found an authorized account: ", account)
+     setCurrentAccount(account);
+     // Store the users public wallet address for later! 
+     setCurrentAccount(account);
+   } else {
+     console.log("No authorized account found")
+   }
+ })
+}
+
+const connectWallet = () => {
+  const { ethereum } = window;
+  if(!ethereum) {
+    alert("Get MetaMask!")
+  }
+
+
+  ethereum.request({ method: 'eth_requestAccounts' })
+  .then(accounts => {
+    console.log("Connected", accounts[0])
+    setCurrentAccount(accounts[0])
+  })
+  .catch(err => console.err(err));
+}
+
+  // This runs our function when the page loads
+  React.useEffect(() => {
+    checkIfWalletIsConnected()
+  }, [])
+
+  return (
+    <div className="mainContainer">
+      <div className="dataContainer">
+        <div className="header">
+          Hey there!
+        </div>
+
+        <div className="bio">
+          I am alan and I am learning how to create and deploy a smart contract to an Ethereum network, pretty cool right? Connect your Ethereum wallet and wave at me!
+        </div>
+
+        <button className="waveButton" onClick={connectWallet}>
+          Wave at Me
+        </button>
+      </div>
+    </div>
+  );
+}
+
+```
 ### Call the deployed smart contract from the web app
+
+#### Call get total waves
+```
+ // Call getTotalWaves()
+  const wave = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner()
+    const waveportalContract = new ethers.Contract(contractAddress, contractABI, signer);
+
+    let count = await waveportalContract.getTotalWaves()
+    console.log("Retrieved total wave count...", count.toNumber())
+  }
+
+```
+
+#### Connect the above function to the wave button
+```
+   <button className="waveButton" onClick={wave}>
+          Wave at Me
+   </button>
+```
+
+#### Create WavePortal.json file
+#### Writing Data
+```
+// Call getTotalWaves()
+const wave = async () => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner()
+  const waveportalContract = new ethers.Contract(contractAddress, contractABI, signer);
+
+  let count = await waveportalContract.getTotalWaves()
+  console.log("Retrieved total wave count...", count.toNumber())
+
+  const waveTxn = await waveportalContract.wave()
+  console.log("Mining...", waveTxn.hash)
+  await waveTxn.wait()
+  console.log("Mined --", waveTxn.hash)
+
+  count = await waveportalContract.getTotalWaves()
+  console.log("Retrieved total wave count...", count.toNumber())
+}
+```
 
 ## 3. Update WavePortal to randomly send lucky users waving at you some Ethereum
 
@@ -154,5 +315,7 @@ npx hardhat run scripts/deploy.js --network rinkeby
 
 ###
 Randomnly pick a winner and prevent spammers
+
+### Finalize and celebrate
 
 
