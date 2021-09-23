@@ -306,8 +306,109 @@ const wave = async () => {
 ```
 
 ## 3. Update WavePortal to randomly send lucky users waving at you some Ethereum
+### Storaging messages from users on the blockchain
+#### WavePortal.sol
+```
+// SPDX-License-Identifier: UNLICENSED
 
-### Storaging message from users on the blockchain
+// the version of the Solidity compi;er we want our contract to use
+pragma solidity ^0.8.0;
+
+// magic given to us by Hardhard to do console logs in our contract
+import "hardhat/console.sol";
+
+contract WavePortal {
+  uint totalWaves;
+
+  // Event 
+  event NewWave(address indexed from, uint timestamp, string message);
+
+  // A struct is a custom datatype where we can customize 
+  // what we want to hold inside it.
+  struct Wave {
+    address waver;  // The address of the user who waved.
+    uint timestamp; // The timestamp the user waved.
+    string message; // The message the user sent
+  }
+
+  // I declare a variable waves that lets me store an array of structs.
+  // This is what lets me hold all the waves anyone even sends to me! 
+  Wave[] waves;
+  
+  constructor() {
+    console.log("We have been constructed");
+  }
+
+// Requires a string called message.
+// This is the message our user sends us from the front end.
+  function wave(string memory _message) public {
+    totalWaves += 1;   
+    console.log("%s is waved w/ message %s",  msg.sender, _message);
+
+    // This is where I actually store the wave data in the array
+    waves.push(Wave(msg.sender, block.timestamp, _message));
+
+    // Triggers an event
+    emit NewWave(msg.sender, block.timestamp, _message);
+  }
+  
+  // Return the array of Waves.
+  function getAllWaves() view public returns(Wave[] memory) {
+    return waves;
+  }
+
+  // "stores" the waves on the smart contract
+  function getTotalWaves() view public returns (uint) {
+    console.log("We have %d total waves", totalWaves);
+    return totalWaves;
+  }
+}
+
+
+```
+#### Run.js
+```
+/*
+1. Creates a local Ethereum blockchain.
+2. Deploys a smart contract.
+3. When the script ends, Hardhat will automatically destory the local network.
+*/
+
+const { hexStripZeros } = require("@ethersproject/bytes");
+const { ethers } = require("ethers");
+
+async function main() {
+
+  // compiles contract and generates necessary files to work w/ our contract under the artifacts directory
+  const waveContractFactory = await hre.ethers.getContractFactory("WavePortal");
+  // Hardhat creates a local Eth network, but just for this contract
+  const waveContract = await waveContractFactory.deploy();
+  // waits for contract to officially deploy to local blockchain
+  await waveContract.deployed();
+  console.log("Contract address: ", waveContract.address);
+
+  
+  // start 
+  let count = await waveContract.getTotalWaves();
+  console.log(count.toNumber());
+
+  let waveTxn = await waveContract.wave("A message!");
+  await waveTxn.wait(); // wait for txn to be mined
+
+  waveTxn = await waveContract.wave("Another message!");
+  await waveTxn.wait(); // wait for txn to be mined
+
+  let allWaves = await waveContract.getAllWaves()
+  console.log(allWaves)
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+});
+```
 
 ### Fund contract, set a prize, and send users Eth
 
