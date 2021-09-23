@@ -409,7 +409,15 @@ main()
     process.exit(1);
 });
 ```
-
+#### Redeploy
+1. We need to deploy it again.
+```
+npx hardhat run scripts/deploy.js --network rinkeby
+```
+2. We need to update the contract address on our frontend. Use the address we get from the above command and update contractAddress found in App.js
+3. We need to update the abi file on our frontend. 
+```
+```
 ### Fund contract, set a prize, and send users Eth
 
 ## 4. Update UI + deploy to an Ethereum testnet so anyone on the internet can wave at you using their wallet
