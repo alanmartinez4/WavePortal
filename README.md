@@ -2,7 +2,7 @@
 
 ## 1. Write and deploy your WavePortal smart contract to a local Ethereum network 
 
-### Get your local Ethereum network working
+### A. Get your local Ethereum network working
 
 #### Create directory and run commands
 
@@ -30,7 +30,7 @@ npx hardhat compile
 npx hardhat test
 ```
 
-### Write a smart contract in Solidity 
+### B. Write a smart contract in Solidity 
 
 ####
 Create a file named WavePortal.sol under the contracts directory.
@@ -48,7 +48,7 @@ contract WavePortal {
 }
 ```
 
-### Compile a contract locally and run it 
+### C. Compile a contract locally and run it 
 ```
 const { hexStripZeros } = require("@ethersproject/bytes");
 
@@ -70,7 +70,7 @@ main()
     process.exit(1);
 });
 ```
-### Store data on the smart contract
+### D. Store data on the smart contract
 
 ```
 
